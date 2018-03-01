@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 namespace GoneHome
 {
-    public class Enemy : MonoBehaviour
+    public class FollowEnemy : MonoBehaviour
     {
         public Transform target;
 

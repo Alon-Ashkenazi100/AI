@@ -10,9 +10,9 @@ namespace GoneHome
 
         private Rigidbody rigid;
 
-        private Transform cam; // << Added this!
+        private Transform cam; // << ADDED
 
-        private float currentY;
+        private float currentY = 180;
 
         // Use this for initialization
         void Start()
@@ -25,38 +25,20 @@ namespace GoneHome
         // Update is called once per frame
         void Update()
         {
-            Movement();
-            Rotation();
-        }
-
-        void Rotation()
-        {
-            if(Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                currentY += 90;
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                currentY -= 90;
-            }
-
-            Quaternion rotation = Quaternion.AngleAxis(currentY, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 0.1f);
-        }
-        void Movement()
-        {
-        
+            float inputH = Input.GetAxis("Horizontal");
             float inputV = Input.GetAxis("Vertical");
 
-            Vector3 inputDir = transform.forward * inputV;
+            Vector3 inputDir = new Vector3(inputH, 0, inputV);
+
+            // Rotate input to face direction of Camera (flat on surface)
+            inputDir = Quaternion.AngleAxis(cam.eulerAngles.y, Vector3.up) * inputDir;
 
             // Copy position
             Vector3 position = transform.position;
-            // Offset the new position
+            // Offset to the new position
             position += inputDir * movementSpeed * Time.deltaTime;
             // Apply new position to rigidbody
             rigid.MovePosition(position);
         }
     }
-}
+} 
