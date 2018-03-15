@@ -14,6 +14,8 @@ namespace GoneHome
         private Transform[] waypoints;
         private int currentIndex = 0;
 
+        private Vector3 spawnPoint;
+
         // Use this for initialisation
         void Start()
         {
@@ -36,6 +38,9 @@ namespace GoneHome
             Vector3 position = transform.position;
             Vector3 direction = current.position - position;
             position += direction.normalized * movementSpeed * Time.deltaTime;
+
+            // Optional
+            transform.rotation = Quaternion.LookRotation(direction);
             // Apply new position to transform
             transform.position = position;
 
@@ -54,6 +59,12 @@ namespace GoneHome
                 currentIndex = 0;
             }
 
+        }
+
+        public void Reset()
+        {
+            transform.position = spawnPoint;
+            currentIndex = 0; // Resets current waypoint to starting one
         }
     }
 }
